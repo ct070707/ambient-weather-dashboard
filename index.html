@@ -31,6 +31,7 @@
     <p id="datetime">Loading...</p>
     <p>🌡️ Temp: <strong id="temp"></strong> °F</p>
     <p>💨 Wind: <strong id="wind"></strong> mph</p>
+    <p>🌬️ Max Gust Today: <strong id="gust"></strong> mph</p>
     <p>🌧️ Rain Today: <strong id="rain"></strong> in</p>
   </div>
 
@@ -47,6 +48,7 @@
           document.getElementById("datetime").innerText = datetime.toLocaleString();
           document.getElementById("temp").innerText = latest.tempf;
           document.getElementById("wind").innerText = latest.windspeedmph;
+          document.getElementById("gust").innerText = latest.maxdailygust;
           document.getElementById("rain").innerText = latest.dailyrainin;
         } else {
           document.getElementById("datetime").innerText = "Device not found";
