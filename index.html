@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home Weather</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f4f8;
+      text-align: center;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 { margin-top: 0; }
+    p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Current Weather</h2>
+    <p id="datetime">Loading...</p>
+    <p>🌡️ Temp: <strong id="temp"></strong> °F</p>
+    <p>💨 Wind: <strong id="wind"></strong> mph</p>
+    <p>🌧️ Rain Today: <strong id="rain"></strong> in</p>
+  </div>
+
+  <script>
+    const apiKey = "1b236fdb963e4aea8bb9d927831c7bf4411ce5284b3a404db8187d6f0a16db27";
+    const appKey = "9be2539728e14642a8a8a637394c8e6fd49f3db366e24923a4da9e63d1daecc6";
+
+    fetch(`https://api.ambientweather.net/v1/devices?apiKey=${apiKey}&applicationKey=${appKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const latest = data.find(device => device.macAddress === "CC:7B:5C:4B:BB:F6")?.lastData;
+        if (latest) {
+          const datetime = new Date(latest.dateutc);
+          document.getElementById("datetime").innerText = datetime.toLocaleString();
+          document.getElementById("temp").innerText = latest.tempf;
+          document.getElementById("wind").innerText = latest.windspeedmph;
+          document.getElementById("rain").innerText = latest.dailyrainin;
+        } else {
+          document.getElementById("datetime").innerText = "Device not found";
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching weather:", error);
+        document.getElementById("datetime").innerText = "Error loading data";
+      });
+  </script>
+</body>
+</html>
